@@ -1,0 +1,150 @@
+.conteneur-grille {
+  display: flex;
+  height: calc(100vh - 32px);
+  margin: 16px;
+}
+
+.grille {
+  border: 1px solid white;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr); /* 12 colonnes de taille flexible */
+  grid-template-rows: repeat(12, 1fr); /* 12 lignes de taille flexible */
+  width: 100%;
+  height: 100%;
+  max-width: 90vmin; /* Limite la largeur à 90% de la plus petite dimension de la fenêtre (viewport) */
+  max-height: 90vmin; /* Limite la hauteur à 90% de la plus petite dimension de la fenêtre (viewport) */
+}
+
+.cellule {
+  display: flex; /* Utiliser le modèle de boîte flex pour centrer le contenu */
+  justify-content: center; /* Centrer horizontalement le contenu */
+  align-items: center; /* Centrer verticalement le contenu */
+  background-color: lightgray; /* Fond blanc pour chaque cellule */
+  border: 1px solid white; /* Bordure noire de 1 pixel autour de chaque cellule */
+  aspect-ratio: 1; /* Assure que les cellules sont carrées */
+  position: relative;
+}
+
+.bouton {
+  margin-top: 8px;
+}
+
+.card-joueur-un {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+}
+
+.card-container-svg {
+  width: 48px;
+  height: 48px;
+}
+
+.ligne-infos-joueur {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.contenu-infos-joueur {
+  width: 33.33%;
+  text-align: center;
+}
+
+.infos-PV {
+  font-weight: bold;
+  color: darkblue;
+}
+
+.infos-actions {
+  font-weight: bold;
+  color: darkgreen;
+}
+
+.infos-zero {
+  font-weight: bold;
+  color: darkred;
+}
+
+.infos-sort {
+  width: 100%;
+  display: flex;
+  text-align: center;
+}
+
+.mat-card-margin {
+  margin: 8px;
+}
+
+.mat-card-sort {
+  margin: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.infos {
+  margin-top: 16px;
+}
+
+.card-container-svg img {
+  width: 100%;
+  height: 100%;
+}
+
+.colonne {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 150px;
+  width: 150px;
+  margin-left: 16px;
+}
+
+.sorts {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.sort {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cellule-possible {
+  background-color: lightseagreen;
+}
+
+.cellule-possible:hover {
+  cursor: pointer;
+  background-color: lightgreen;
+}
+
+.cellule-possible-sort {
+  background-color: lightblue;
+}
+
+.cellule-possible-sort:hover {
+  cursor: pointer;
+  background-color: lightcyan;
+}
+
+.joueur-en-cours {
+  background-color: lightyellow;
+}
+
+.cellule img {
+  width: 100%; /* Définit la largeur de l'image à 100% de la largeur de la cellule */
+  height: 100%; /* Définit la hauteur de l'image à 100% de la hauteur de la cellule */
+  object-fit: contain; /* Ajuste la taille de l'image tout en préservant son ratio d'aspect */
+  position: absolute; /* Positionne l'image par rapport à la cellule */
+  top: 0; /* Aligne l'image en haut de la cellule */
+  left: 0; /* Aligne l'image à gauche de la cellule */
+}
+
+.cellule-morte {
+  background-color: black;
+}

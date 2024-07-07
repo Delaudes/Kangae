@@ -1,0 +1,185 @@
+<div class="conteneur-grille">
+  <div class="grille">
+    <div *ngFor="let ligne of lignes; let x = index" class="ligne">
+      <div
+        *ngFor="let colonne of colonnes; let y = index"
+        class="cellule"
+        [ngClass]="{
+          'cellule-possible':
+            affichageCellulesPossibles &&
+            estCellulePossible(x, y) &&
+            !sortEnCours,
+          'cellule-possible-sort':
+            affichageCellulesPossibles &&
+            estCellulePossible(x, y) &&
+            sortEnCours,
+          'cellule-morte': estCelluleMorte(x, y),
+          'joueur-en-cours': joueurEnCours?.estLa(x, y)
+        }"
+        (click)="effectuerAction(x, y)"
+      >
+        <div
+          *ngIf="joueurUn.estLa(x, y)"
+          [ngClass]="{
+            'cellule-actuelle': joueurEnCours?.estLa(x, y)
+          }"
+        >
+          <img src="{{ joueurUn.getLocationSvg() }}" />
+        </div>
+        <div
+          *ngIf="joueurDeux.estLa(x, y)"
+          [ngClass]="{
+            'cellule-actuelle': joueurEnCours?.estLa(x, y)
+          }"
+        >
+          <img src="{{ joueurDeux.getLocationSvg() }}" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!joueurEnCours" class="colonne">
+    <button
+      class="bouton"
+      mat-flat-button
+      color="primary"
+      (click)="demarrerJeu()"
+    >
+      Démarrer
+    </button>
+  </div>
+  <div *ngIf="joueurEnCours" class="colonne">
+    <div>
+      <mat-card [ngClass]="{ 'joueur-en-cours': joueurUn.est(joueurEnCours) }">
+        <div class="mat-card-margin">
+          <div class="card-joueur-un">
+            <div class="card-container-svg">
+              <img src="{{ joueurUn.getLocationSvg() }}" />
+            </div>
+            <div>
+              <mat-card-title>Joueur 1</mat-card-title>
+              <mat-card-subtitle
+                >Kangae {{ joueurUn.getElement() }}</mat-card-subtitle
+              >
+            </div>
+          </div>
+          <div class="ligne-infos-joueur">
+            <div class="contenu-infos-joueur">PV</div>
+            <div class="contenu-infos-joueur">PA</div>
+            <div class="contenu-infos-joueur">PM</div>
+          </div>
+          <div class="ligne-infos-joueur">
+            <div class="contenu-infos-joueur infos-PV">
+              {{ joueurUn.getPV() }}
+            </div>
+            <div
+              class="contenu-infos-joueur infos-actions"
+              [ngClass]="{ 'infos-zero': joueurDeux.aPlusDePA() }"
+            >
+              {{ joueurUn.getPA() }}
+            </div>
+            <div
+              class="contenu-infos-joueur infos-actions"
+              [ngClass]="{ 'infos-zero': joueurDeux.aPlusDePM() }"
+            >
+              {{ joueurUn.getPM() }}
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+    <div class="infos">
+      <mat-card
+        [ngClass]="{ 'joueur-en-cours': joueurDeux.est(joueurEnCours) }"
+      >
+        <div class="mat-card-margin">
+          <div class="card-joueur-un">
+            <div class="card-container-svg">
+              <img src="{{ joueurDeux.getLocationSvg() }}" />
+            </div>
+            <div>
+              <mat-card-title>Joueur 2</mat-card-title>
+              <mat-card-subtitle
+                >Kangae {{ joueurDeux.getElement() }}</mat-card-subtitle
+              >
+            </div>
+          </div>
+          <div class="ligne-infos-joueur">
+            <div class="contenu-infos-joueur">PV</div>
+            <div class="contenu-infos-joueur">PA</div>
+            <div class="contenu-infos-joueur">PM</div>
+          </div>
+          <div class="ligne-infos-joueur">
+            <div class="contenu-infos-joueur infos-PV">
+              {{ joueurDeux.getPV() }}
+            </div>
+            <div
+              class="contenu-infos-joueur infos-actions"
+              [ngClass]="{ 'infos-zero': joueurDeux.aPlusDePA() }"
+            >
+              {{ joueurDeux.getPA() }}
+            </div>
+            <div
+              class="contenu-infos-joueur infos-actions"
+              [ngClass]="{ 'infos-zero': joueurDeux.aPlusDePM() }"
+            >
+              {{ joueurDeux.getPM() }}
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+    <button
+      *ngIf="joueurEnCours"
+      class="bouton"
+      mat-flat-button
+      color="primary"
+      (click)="demarrerJeu()"
+    >
+      Recommencer
+    </button>
+    <button
+      *ngIf="joueurEnCours"
+      class="bouton"
+      mat-flat-button
+      color="accent"
+      (click)="terminerTour()"
+    >
+      Terminer tour
+    </button>
+    <button
+      *ngIf="joueurEnCours"
+      class="bouton"
+      (click)="afficherCellulesPossibles()"
+      [disabled]="joueurEnCours.aPlusDePM()"
+      mat-mini-fab
+      color="primary"
+    >
+      <img src="assets/deplacement.svg" />
+    </button>
+    <div class="sorts">
+      <div class="sort" *ngFor="let sort of joueurEnCours?.getSorts()">
+        <button
+          class="bouton"
+          (click)="afficherCellulesPossiblesSort(sort)"
+          [disabled]="joueurEnCours.aPasAssezDePA(sort.getPA())"
+          mat-mini-fab
+          color="accent"
+        >
+          <img src="{{ sort.getLocationSvg() }}" />
+        </button>
+      </div>
+    </div>
+    <div class="infos" *ngIf="affichageCellulesPossibles && sortEnCours">
+      <mat-card>
+        <div class="mat-card-sort">
+          <mat-card-title>{{ sortEnCours.getNom() }}</mat-card-title>
+          <mat-card-subtitle>PA : {{ sortEnCours.getPA() }}</mat-card-subtitle>
+          <div class="infos-sort">
+            {{ sortEnCours.getDescription() }}
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>
